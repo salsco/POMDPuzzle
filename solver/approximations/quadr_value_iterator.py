@@ -151,9 +151,9 @@ class QuadraticValueIterator(ValueIterator):
             if(not h1_part):
                 continue
             if(h1.label not in partitions_dict):
-                partitions_dict[h1.label]=[h1_part]
+                partitions_dict[h1.label]=[Quadratic(h1_part,h1.label)]
             else:
-                partitions_dict[h1.label]+=[h1_part]
+                partitions_dict[h1.label]+=[Quadratic(h1_part,h1.label)]
 
         #return partitions,partitions_dict
         return partitions_dict
