@@ -61,7 +61,7 @@ class QuadraticValueIterator(ValueIterator):
         dynamics=self.dynamics
         transform_matrix=np.zeros((len(dynamics.STATES),len(dynamics.STATES)))
         for s_prime_idx,s_prime in enumerate(dynamics.STATES):
-            gradient, bias=gradients_bias(dynamics,o_idx,a_idx,s_prime_idx)
+            gradient, bias=self.gradients_bias(dynamics,o_idx,a_idx,s_prime_idx)
             transform_matrix[s_prime_idx,:-1]=gradient
             transform_matrix[s_prime_idx,-1]=bias
         maximum_quadratic.label=dynamics.ACTIONS[a_idx]
@@ -75,7 +75,7 @@ class QuadraticValueIterator(ValueIterator):
         for a_idx,a in enumerate(dynamics.ACTIONS):
             transformed_quadratics=[]
             for o_idx,o in enumerate(dynamics.OBSERVATIONS):
-                transformed_quadratic=transform_belief_value(dynamics,max_value_horizon_prev,a_idx,o_idx) # Quadratic
+                transformed_quadratic=self.transform_belief_value(dynamics,max_value_horizon_prev,a_idx,o_idx) # Quadratic
                 transformed_quadratics+=[transformed_quadratic]
             quadratics_for_transformed_belief_value[a_idx]=transformed_quadratics
         return quadratics_for_transformed_belief_value
