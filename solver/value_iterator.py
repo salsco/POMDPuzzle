@@ -6,6 +6,7 @@ class ValueIterator:
         self.dynamics=dynamics
 
     def value_iteration(self,gamma=1,eps=0.1,max_iter=100):
+        dynamics=self.dynamics
         belief_rewards=self.build_immediate_reward(dynamics)
         obs_given_ba=self.observation_given_belief_action_prob(dynamics)
         maximum_belief_rewards=self.maximum_vfunct(belief_rewards)
