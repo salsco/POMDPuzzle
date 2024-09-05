@@ -1,7 +1,7 @@
 import numpy as np
 
-from POMDPuzzle.solver.value_iterator import *
-from POMDPuzzle.utils.curves import *
+from pomdpuzzle.solver.value_iterator import *
+from pomdpuzzle.utils.curves import *
 
 class QuadraticValueIterator(ValueIterator):
 
