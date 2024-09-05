@@ -15,6 +15,6 @@ class Dynamics:
     # R(s,a)
     expected_rewards=np.zeros((self.reward_state_action_prob.shape[1],self.reward_state_action_prob.shape[2]))
     for reward_idx in range(self.reward_state_action_prob.shape[0]):
-      expected_rewards+=reward_state_action_prob[reward_idx]*REWARDS[reward_idx]
+      expected_rewards+=self.reward_state_action_prob[reward_idx]*self.REWARDS[reward_idx]
 
     return expected_rewards
