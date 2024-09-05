@@ -150,13 +150,13 @@ class QuadraticValueIterator(ValueIterator):
                 #print(dec_boundary)
                 if(h1_idx==h2_idx or h1.label==h2.label):
                     continue
-                h1_part.append(dec_boundary)
+                h1_part.append(Quadratic(dec_boundary,h1.label))
             if(not h1_part):
                 continue
             if(h1.label not in partitions_dict):
-                partitions_dict[h1.label]=[Quadratic(h1_part,h1.label)]
+                partitions_dict[h1.label]=[h1_part]
             else:
-                partitions_dict[h1.label]+=[Quadratic(h1_part,h1.label)]
+                partitions_dict[h1.label]+=[h1_part]
 
         #return partitions,partitions_dict
         return partitions_dict
