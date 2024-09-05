@@ -35,4 +35,4 @@ class ValueIterator:
         print("Iterations Performed: "+str(t+1))
         print("Delta: "+str(delta))
 
-        return max_value_horizon_cur,parition_dict
+        return max_value_horizon_cur,partition_dict
