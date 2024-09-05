@@ -20,7 +20,7 @@ class ValueIterator:
                 break
             print("Iteration number "+str(t+1))
             transformed_vfunct=self.all_values_transform(max_value_horizon_cur)
-            gamma_terms=self.characterize_gamma_terms(obs_given_ba)
+            gamma_terms=self.characterize_gamma_terms(obs_given_ba,transformed_vfunct)
             new_horizon=self.finalize_sum(gamma_terms,belief_rewards,gamma)
             new_max_value_horizon=self.maximum_vfunct(new_horizon)
             max_value_horizon_cur=new_max_value_horizon
