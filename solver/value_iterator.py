@@ -23,6 +23,7 @@ class ValueIterator:
             gamma_terms=self.characterize_gamma_terms(obs_given_ba,transformed_vfunct)
             new_horizon=self.finalize_sum(gamma_terms,belief_rewards,gamma)
             new_max_value_horizon=self.maximum_vfunct(new_horizon)
+            delta=self.delta_function(max_value_horizon_cur,new_max_value_horizon)
             max_value_horizon_cur=new_max_value_horizon
             t+=1
             print("Delta: "+str(delta))

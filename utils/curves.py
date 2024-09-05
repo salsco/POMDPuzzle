@@ -136,6 +136,7 @@ class Quadratic:
 
   
   def quadraticform_string(self,decs=3):
+    raw_Q=self.quadr_matr
     Q=np.trunc(raw_Q*10**decs)/(10**decs)
     d = Q.shape[0]
     variables = [f'x{i+1}' for i in range(d-1)]

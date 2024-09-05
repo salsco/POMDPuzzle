@@ -126,6 +126,9 @@ class QuadraticValueIterator(ValueIterator):
         max_vfunct_quadratic=Quadratic.linear_regr_quadratic(maximum_eval_funct, len(self.dynamics.STATES)-1,"No Label")
         return max_vfunct_quadratic
 
+    def delta_function(self,max_value_horizon_cur,new_max_value_horizon):
+        delta=np.sqrt(np.sum((max_value_horizon_cur.quadr_matr-new_max_value_horizon.quadr_matr)**2)) # Frobenius distance
+        return delta
 
 
     def get_partitioned_max_space(self,horizon):
