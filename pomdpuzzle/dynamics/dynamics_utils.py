@@ -1,7 +1,7 @@
 import numpy as np
 
 class Dynamics:
-  def __init__(self,reward_state_action_prob,state_state_action_prob,observation_state_action_prob,STATES,ACTIONS,OBSERVATIONS,REWARDS):
+  def __init__(self,reward_state_action_prob,state_state_action_prob,observation_state_action_prob,STATES,ACTIONS,OBSERVATIONS,REWARDS,eps_check=0.0001):
     self.reward_state_action_prob=reward_state_action_prob
     self.state_state_action_prob=state_state_action_prob
     self.observation_state_action_prob=observation_state_action_prob
@@ -10,6 +10,7 @@ class Dynamics:
     self.OBSERVATIONS=OBSERVATIONS
     self.REWARDS=REWARDS
     self.expected_rewards=self.get_expected_rewards()
+    self.eps_check=eps_check
 
   def get_expected_rewards(self):
     # R(s,a)
@@ -28,6 +29,8 @@ class Dynamics:
     b2=np.diag(self.observation_state_action_prob[observation_idx,:,action_idx])
     b3=np.matmul(b2,b1)
     b4=b3/np.sum(b3)
+    # To avoid zeros
+    b4=b4+self.eps_check
 
     return b4
 
