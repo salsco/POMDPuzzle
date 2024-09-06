@@ -103,8 +103,8 @@ class Quadratic:
 
     new_Q=np.zeros((Q.shape[0],Q.shape[1]))
     new_Q[:-1,:-1]=Q[:-1,:-1]
-    new_Q[-1,:-1]=q_vec+a[:-1]
-    new_Q[:-1,-1]=q_vec+a[:-1]
+    new_Q[-1,:-1]=q_vec+a[:-1]/2
+    new_Q[:-1,-1]=q_vec+a[:-1]/2
     new_Q[-1,-1]=Q[-1,-1]+a[-1]
     return Quadratic(new_Q,self.label)
 
