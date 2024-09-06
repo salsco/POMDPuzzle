@@ -160,3 +160,10 @@ class QuadraticValueIterator(ValueIterator):
 
         #return partitions,partitions_dict
         return partitions_dict
+
+
+    def to_act_value_dict(self,horizon):
+        act_value_dict={}
+        for quadr in horizon:
+            act_value_dict[quadr.label]=quadr
+        return act_value_dict

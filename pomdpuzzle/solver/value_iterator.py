@@ -1,4 +1,5 @@
 import numpy as np
+from pomdpuzzle.dynamics.policy_utils import *
 
 class ValueIterator:
 
@@ -36,4 +37,7 @@ class ValueIterator:
         print("Iterations Performed: "+str(t+1))
         print("Delta: "+str(delta))
 
-        return max_value_horizon_cur,partition_dict
+        action_valued_funct=ActionValueFunction(self.to_act_value_dict(new_horizon))
+        policy=Policy(action_valued_funct)
+
+        return max_value_horizon_cur,partition_dict,action_valued_funct,policy

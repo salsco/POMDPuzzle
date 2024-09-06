@@ -1,0 +1,12 @@
+Metadata-Version: 1.0
+Name: POMDPuzzle
+Version: 0.0.1
+Summary: A custom library to solve Partially Observable Markov Decision Processes (POMDPs)
+Home-page: UNKNOWN
+Author: Salvatore Scozzari
+Author-email: UNKNOWN
+License: UNKNOWN
+Description: # POMDPuzzle
+        A custom library to solve Partially Observable Markov Decision Processes (POMDP)
+        
+Platform: UNKNOWN
