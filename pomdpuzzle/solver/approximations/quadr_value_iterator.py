@@ -164,6 +164,6 @@ class QuadraticValueIterator(ValueIterator):
 
     def to_act_value_dict(self,horizon):
         act_value_dict={}
-        for quadr in horizon:
+        for quadr in horizon.quadratics:
             act_value_dict[quadr.label]=quadr
         return act_value_dict
