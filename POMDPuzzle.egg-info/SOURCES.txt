@@ -7,6 +7,7 @@ POMDPuzzle.egg-info/top_level.txt
 pomdpuzzle/__init__.py
 pomdpuzzle/dynamics/__init__.py
 pomdpuzzle/dynamics/dynamics_utils.py
+pomdpuzzle/dynamics/policy_utils.py
 pomdpuzzle/solver/__init__.py
 pomdpuzzle/solver/value_iterator.py
 pomdpuzzle/solver/approximations/__init__.py
