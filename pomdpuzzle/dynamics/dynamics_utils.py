@@ -18,3 +18,16 @@ class Dynamics:
       expected_rewards+=self.reward_state_action_prob[reward_idx]*self.REWARDS[reward_idx]
 
     return expected_rewards
+
+
+ def update_beliefs(self,belief_point,action,observation):
+     action_idx=self.ACTIONS.index(action)
+     observation_idx=self.OBSERVATIONS.index(observation)
+     b1=np.matmul(self.state_state_action_prob[:,:,action_idx],belief_point)
+     b2=np.diag(observation_state_action_prob[observation_idx,:,action_idx])
+     b3=np.matmul(b2,b1)
+     b4=b3/np.sum(b3)
+
+     return b4
+
+
