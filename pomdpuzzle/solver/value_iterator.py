@@ -6,7 +6,7 @@ class ValueIterator:
     def __init__(self, dynamics):
         self.dynamics=dynamics
 
-    def value_iteration(self,gamma=1,eps=0.1,max_iter=100):
+    def value_iteration(self,gamma=1,eps=0.1,max_iter=100,overflow_thr=30,gamma_reduction=0.8):
         dynamics=self.dynamics
         belief_rewards=self.build_immediate_reward(dynamics)
         obs_given_ba=self.observation_given_belief_action_prob()
@@ -25,9 +25,13 @@ class ValueIterator:
             new_horizon=self.finalize_sum(gamma_terms,belief_rewards,gamma)
             new_max_value_horizon=self.maximum_vfunct(new_horizon)
             delta=self.delta_function(max_value_horizon_cur,new_max_value_horizon)
-            max_value_horizon_cur=new_max_value_horizon
             t+=1
             print("Delta: "+str(delta))
+            if(delta>=overflow_thr):
+                print("Overflowing Value Iteration. Lowering gamma.")
+                gamma*=gamma_reduction
+                continue
+            max_value_horizon_cur=new_max_value_horizon
 
         partition_dict=None
         if(new_horizon):
