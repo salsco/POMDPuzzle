@@ -43,29 +43,38 @@ class QuadraticValueIterator(ValueIterator):
 
 # To approximate with derivative, we must compute the gradients evaluated in 0
 
-    def gradients_bias(self,o_idx,a_idx,s_idx):
-        dynamics=self.dynamics
-        ones_vec=np.ones(len(dynamics.STATES)-1)
-        zero_valued_num=dynamics.observation_state_action_prob[o_idx,s_idx,a_idx]*dynamics.state_state_action_prob[s_idx,-1,a_idx]
-        zero_valued_den=np.dot(dynamics.observation_state_action_prob[o_idx,:,a_idx].transpose(),dynamics.state_state_action_prob[:,-1,a_idx])
-        grad_num_0=dynamics.state_state_action_prob[s_idx,:-1,a_idx]-np.dot(dynamics.state_state_action_prob[s_idx,-1,a_idx],ones_vec.transpose())
-        grad_num=dynamics.observation_state_action_prob[o_idx,s_idx,a_idx]*grad_num_0
-        grad_den_0=dynamics.state_state_action_prob[:,:-1,a_idx]-np.matmul(dynamics.state_state_action_prob[:,-1,a_idx][None].transpose(),ones_vec[None])
-        grad_den=np.dot(dynamics.observation_state_action_prob[o_idx,:,a_idx].transpose(),grad_den_0)
-        overall_grad=(grad_num*zero_valued_den-zero_valued_num*grad_den)/(zero_valued_den*zero_valued_den)
-
-        return -overall_grad,zero_valued_num/zero_valued_den
+    def taylor_zero(self,dynamics,a_idx,o_idx):
+        o=dynamics.observation_state_action_prob[o_idx,:,a_idx]
+        ones_vec=np.ones((len(dynamics.STATES)))
+        S=dynamics.state_state_action_prob[:,:,a_idx]
+        grad_num=np.dot(np.diag(o),S)
+        grad_den=np.dot(ones_vec[None],np.dot(np.diag(o),S))
+        zero_point=np.zeros((len(dynamics.STATES)))
+        zero_point[-1]=1
+        zero_num=np.dot(grad_num,zero_point)
+        zero_den=np.dot(grad_den,zero_point)
+        f_0=zero_num/zero_den
+        grad=(grad_num*zero_den[0]-np.dot(zero_num[None],grad_den.transpose()))/(zero_den*zero_den)
+        # linearized approx is f_0+grad*(b-b0); We should put it into single matrix vec
+        transform_matrix=np.zeros((len(dynamics.STATES),len(dynamics.STATES)+1))
+        transform_matrix[:,:-1]=grad
+        transform_matrix[:,-1]=f_0-np.dot(grad,zero_point)
+        return transform_matrix
 
 
     def transform_belief_value(self,maximum_quadratic,a_idx,o_idx,log=False):
-        dynamics=self.dynamics
-        transform_matrix=np.zeros((len(dynamics.STATES),len(dynamics.STATES)))
-        for s_prime_idx,s_prime in enumerate(dynamics.STATES):
-            gradient, bias=self.gradients_bias(o_idx,a_idx,s_prime_idx)
-            transform_matrix[s_prime_idx,:-1]=gradient
-            transform_matrix[s_prime_idx,-1]=bias
+        transform_matrix=self.taylor_zero(dynamics,a_idx,o_idx)
+        # We need to readapt the transform matrix
+        readapted_transform_matrix_0 = transform_matrix[:, :-2] - transform_matrix[:, [-2]]
+        readapted_transform_matrix = np.hstack((readapted_transform_matrix_0, transform_matrix[:, -2:-1]))
+        new_last_column = transform_matrix[:, -1] + transform_matrix[:, -2]
+        readapted_transform_matrix = np.hstack((readapted_transform_matrix, new_last_column.reshape(-1, 1)))
+        last_row = np.zeros((1, readapted_transform_matrix.shape[1]))
+        last_row[0, -1] = 1
+        readapted_transform_matrix[-1, :] = last_row
+        readapted_transform_matrix = np.delete(readapted_transform_matrix, -2, axis=1)
         maximum_quadratic.label=dynamics.ACTIONS[a_idx]
-        transformed_quadratic=maximum_quadratic.linear_transformation(transform_matrix)
+        transformed_quadratic=maximum_quadratic.linear_transformation(readapted_transform_matrix)
         return transformed_quadratic
 
 
