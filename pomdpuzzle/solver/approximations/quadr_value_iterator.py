@@ -44,6 +44,7 @@ class QuadraticValueIterator(ValueIterator):
 # To approximate with derivative, we must compute the gradients evaluated in 0
 
     def taylor_zero(self,dynamics,a_idx,o_idx):
+        dynamics=self.dynamics
         o=dynamics.observation_state_action_prob[o_idx,:,a_idx]
         ones_vec=np.ones((len(dynamics.STATES)))
         S=dynamics.state_state_action_prob[:,:,a_idx]
@@ -63,6 +64,7 @@ class QuadraticValueIterator(ValueIterator):
 
 
     def transform_belief_value(self,maximum_quadratic,a_idx,o_idx,log=False):
+        dynamics=self.dynamics
         transform_matrix=self.taylor_zero(dynamics,a_idx,o_idx)
         # We need to readapt the transform matrix
         readapted_transform_matrix_0 = transform_matrix[:, :-2] - transform_matrix[:, [-2]]
